@@ -23,10 +23,10 @@ class RegistrationForm(UserCreationForm):
                                        ' адрес электронной почты.',
                              label=_('Электронная почта'))
     address = forms.CharField(max_length=100, required=False,
-                              help_text='Необязательное поле.',
-                              label=_('Адрес проживания'),)
+                              help_text='Для читателей.',
+                              label=_('Адрес проживания'), )
     table_number = forms.IntegerField(required=False,
-                                      help_text='Необязательное поле.',
+                                      help_text='Для библиотекарей.',
                                       label=_('Табельный номер'))
 
     def save(self, commit=True):
@@ -54,15 +54,16 @@ class RegistrationForm(UserCreationForm):
         ]
 
 
-class UserUpdateForm(forms.ModelForm):
+class AdminUserForm(RegistrationForm):
     class Meta:
-        model = User
-        fields = ('username',
-                  'first_name',
-                  'last_name',
-                  'email',
-                  'is_active')
-        widgets = {
-            'password': forms.PasswordInput()
-
-        }
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            "address",
+            "table_number",
+            'email',
+            'password1',
+            'password2',
+        ]
+        exclude = ["role"]

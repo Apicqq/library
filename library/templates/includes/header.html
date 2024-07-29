@@ -3,53 +3,63 @@
   <nav class="navbar navbar-light" style="background-color: lightskyblue">
     <div class="container">
       <a class="navbar-brand" href="{% url "books:index" %}">
-        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="{% static 'img/logo.png' %}" width="30" height="30"
+             class="d-inline-block align-top" alt="">
         Библиотека у дома
       </a>
-{#      {% with request.resolver_match.view_name as view_name %}#}
-        <ul class="nav  nav-pills">
-{#          <li class="nav-item">#}
-{#            <a class="nav-link {% if view_name == 'pages:about' %} text-white {% endif %}" href="{% url 'pages:about' %}">#}
-{#              О проекте#}
-{#            </a>#}
-{#          </li>#}
-{#          <li class="nav-item">#}
-{#            <a class="nav-link {% if view_name == 'pages:rules' %} text-white {% endif %}" href="{% url 'pages:rules' %}">#}
-{#              Правила#}
-{#            </a>#}
-{#          </li>#}
-{% if request.user.is_authenticated %}
-  {% if request.user.is_librarian %}
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-      <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-          href="{% url 'books:add_book' %}">Добавить книгу</a></button>
-      <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-          href="{% url 'books:my_books' %}">Мои книги</a></button>
-      <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-          href="{% url 'users:profile' user.username %}">{{ request.user.username }}</a></button>
-    </div>
-  {% elif request.user.is_reader %}
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-      <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-          href="{% url 'books:my_books' %}">Мои книги</a></button>
-      <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-          href="{% url 'users:profile' user.username %}">{{ request.user.username }}</a></button>
-      <form action="{% url "users:logout" %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-primary">Выйти</button>
-        </form>
-    </div>
-  {% endif %}
-{% else %}
-  <div class="btn-group" role="group" aria-label="Basic outlined example">
-    <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-        href="{% url 'users:login' %}">Войти</a></button>
-    <button type="button" class="btn btn-outline-primary"><a class="text-decoration-none text-reset"
-        href="{% url 'users:registration' %}">Регистрация</a></button>
-  </div>
-{% endif %}
-        </ul>
-{#      {% endwith %}#}
+      <ul class="nav nav-pills">
+        {% if request.user.is_authenticated %}
+          {% if request.user.is_librarian %}
+            <div class="btn-group" role="group"
+                 aria-label="Basic outlined example">
+              <button type="button" class="btn btn-outline-primary"><a
+                  class="text-decoration-none text-reset"
+                  href="{% url 'books:add_book' %}">Добавить книгу</a></button>
+              <button type="button" class="btn btn-outline-primary"><a
+                  class="text-decoration-none text-reset"
+                  href="{% url 'books:my_books' %}">Мои книги</a></button>
+              <button type="button" class="btn btn-outline-primary"><a
+                  class="text-decoration-none text-reset"
+                  href="{% url 'books:debtors' %}">Должники</a></button>
+              <button type="button" class="btn btn-outline-primary"><a
+                  class="text-decoration-none text-reset"
+                  href="{% url 'users:profile' user.username %}">{{ request.user.username }}</a>
+              </button>
+              <form action="{% url "users:logout" %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary">Выйти
+                </button>
+              </form>
+            </div>
+          {% elif request.user.is_reader %}
+            <div class="btn-group" role="group"
+                 aria-label="Basic outlined example">
+              <button type="button" class="btn btn-outline-primary"><a
+                  class="text-decoration-none text-reset"
+                  href="{% url 'books:my_books' %}">Мои книги</a></button>
+              <button type="button" class="btn btn-outline-primary"><a
+                  class="text-decoration-none text-reset"
+                  href="{% url 'users:profile' user.username %}">{{ request.user.username }}</a>
+              </button>
+              <form action="{% url "users:logout" %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary">Выйти
+                </button>
+              </form>
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="btn-group" role="group"
+               aria-label="Basic outlined example">
+            <button type="button" class="btn btn-outline-primary"><a
+                class="text-decoration-none text-reset"
+                href="{% url 'users:login' %}">Войти</a></button>
+            <button type="button" class="btn btn-outline-primary"><a
+                class="text-decoration-none text-reset"
+                href="{% url 'users:registration' %}">Регистрация</a></button>
+          </div>
+        {% endif %}
+      </ul>
     </div>
   </nav>
 </header>

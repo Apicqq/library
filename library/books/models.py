@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class Book(models.Model):
@@ -24,6 +25,7 @@ class Book(models.Model):
         blank=True,
         null=True,
     )
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Книга"

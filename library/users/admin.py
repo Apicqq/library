@@ -1,63 +1,34 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
+from users.filters import HasRentedBooksFilter
+from users.forms import RegistrationForm
 from users.models import Librarian, Reader
 
 
-#
-#
 @admin.register(Librarian)
-class LibrarianAdmin(UserAdmin):
-    readonly_fields = ("table_number",)
-    list_display = ("username", "first_name", "last_name", "table_number")
-    fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        ("Персональная информация",
-         {"fields": ("first_name", "last_name", "email", "table_number")}),
-        (
-            "Права доступа",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
-        ),
-        ("Важные даты", {"fields": ("last_login", "date_joined")}),
-    )
+class LibrarianAdmin(admin.ModelAdmin):
+    list_display = (
+        "username", "first_name", "last_name", "table_number")
+    form = RegistrationForm
 
-    @admin.action(description="Табличный номер")
+    @admin.action(description="Табельный номер")
     def table_number(self, obj):
         return obj.lib_extra_fields.table_number
 
 
 @admin.register(Reader)
-class ReaderAdmin(UserAdmin):
-    readonly_fields = ("address",)
-    list_display = ("username", "first_name", "last_name", "address",)
+class ReaderAdmin(admin.ModelAdmin):
+    list_display = (
+        "username", "first_name", "last_name", "address", "ever_rented_a_book",
+        "has_rented_books"
+    )
+    form = RegistrationForm
+    list_filter = ("ever_rented_a_book", HasRentedBooksFilter)
 
-    @admin.action(description="Адрес проживания")
+    @admin.display(description="Адрес проживания")
     def address(self, obj):
         return obj.reader_extra_fields.address
 
-    fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        ("Персональная информация",
-         {"fields": ("first_name", "last_name", "email", "address")}),
-        (
-            "Права доступа",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
-        ),
-        ("Важные даты", {"fields": ("last_login", "date_joined")}),
-    )
+    @admin.display(description="Есть книги на руках", boolean=True)
+    def has_rented_books(self, obj):
+        return len(obj.books.all()) > 0

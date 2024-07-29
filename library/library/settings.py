@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-8je+onh*ktw&-unt$#nqzk^l9gr*y^@!)gri90n@(j4ic1k-c8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
@@ -37,6 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django_bootstrap5",
+    "books.apps.BooksConfig",
+    "users.apps.UsersConfig",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "django_filters",
+    "simple_history",
 ]
 
 MIDDLEWARE = [
@@ -51,10 +61,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'library.urls'
 
+TEMPLATES_DIR = BASE_DIR / "templates"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -117,7 +129,21 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "templates/static",
+]
+
+LOGIN_URL = 'users:login'
+
+LOGIN_REDIRECT_URL = 'books:index'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "users.User"
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+MEDIA_URL = "/media/"

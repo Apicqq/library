@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        Регистрация пользователя
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {% for field in form %}
+            {% bootstrap_field field id="asd123" %}
+          {% endfor %}
+          {% bootstrap_button button_type="submit" content="Создать" %}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+  {% block scripts %}
+  <script>
+      $(document).ready(function () {
+          $('#id_role').change(function () {
+              const role = $(this).val();
+              $.ajax({
+                  type: 'GET',
+                  url: '{% url "users:get_dynamic_fields" %}',
+                  data: {'role': role},
+                  success: function (data) {
+                      if (data.address === "visible") {
+                          $('.mb-3:nth-child(6)').show();
+                      } else {
+                          $(".mb-3:nth-child(6)").hide();
+                      }
+                      if (data.tab_number === "visible") {
+                          $(".mb-3:nth-child(7)").show();
+                      } else {
+                          $(".mb-3:nth-child(7)").hide();
+                      }
+                      {# поля в обозримом будущем добавляться не будут,#}
+                      {# поэтому тут можно и захардкодить селекторы #}
+                  }
+              });
+          });
+      });
+  </script>
+{% endblock %}

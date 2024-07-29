@@ -1,0 +1,42 @@
+{% load static %}
+<div class="col d-flex justify-content-center">
+  <div class="card" style="width: 40rem;">
+    <div class="card-body">
+      {% if book.cover %}
+        <a href="{{ book.cover.url }}" target="_blank">
+          <img
+              class="border-3 rounded img-fluid img-thumbnail mb-2 mx-auto d-block"
+              src="{{ book.image.url }}">
+        </a>
+      {% endif %}
+      <h5 class="card-title" id="card-title">{{ book.title }} </h5>
+      <h6 class="card-subtitle mb-2 text-muted">
+        <small>
+          {% if book.is_borrowed %}
+            <p class="text-danger">Книга взята на чтение</p>
+          {% else %}
+            <p class="text-success">Книга доступна!</p>
+          {% endif %}
+          {{ book.year }} | {{ book.author }} в жанре {{ book.genre }}<br>
+        </small>
+      </h6>
+      {% if not book.is_borrowed %}
+        <form action="{% url "books:rent" book.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-primary">Взять книгу
+          </button>
+        </form>
+      {% elif book.is_borrowed and book.reader == request.user %}
+        <form action="{% url "books:return" book.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary">Вернуть книгу
+        </button>
+      {% endif %}
+      <button class="btn btn-outline-primary 123" type="submit" id="copy-button"
+              data-toggle="tooltip"
+              title="Скопировать">Скопировать название
+      </button>
+      </form>
+    </div>
+  </div>
+</div>

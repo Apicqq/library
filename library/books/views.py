@@ -7,7 +7,7 @@ from django.views.generic import ListView, CreateView
 
 from books.forms import BookCreateForm
 from books.models import Book
-from users.views import User
+from users.models import Reader
 
 
 class BooksListView(ListView):
@@ -42,15 +42,16 @@ class BookCreateView(CreateView):
         return super().form_valid(form)
 
 
-class LibrarianUsersListView(ListView):
-    model = User
-    template_name = "users/user_list.html"
+class LibrarianDebtorsListView(ListView):
+    model = Reader
+    template_name = "books/debtors.html"
     context_object_name = "users"
     paginate_by = 10
 
 
 @login_required
 def rent_a_book(request, pk):
+    user = request.user
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
         if book.is_borrowed:
@@ -60,10 +61,13 @@ def rent_a_book(request, pk):
             )
         else:
             book.reader = request.user
+            request.user.ever_rented_a_book = True
             book.is_borrowed = True
             book.borrowed_at = now()
+            user.ever_rented_a_book = True
+            user.save()
         book.save()
-    return redirect("books:index")
+    return redirect(request.META.get("HTTP_REFERER"))
 
 
 @login_required
@@ -75,4 +79,4 @@ def return_a_book(request, pk):
             book.is_borrowed = False
             book.borrowed_at = None
             book.save()
-    return redirect("books:index")
+    return redirect(request.META.get("HTTP_REFERER"))

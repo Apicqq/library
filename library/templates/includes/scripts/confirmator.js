@@ -3,7 +3,7 @@ buttons.forEach(button => {
     button.addEventListener("click", function () {
         this.textContent = "Готово!";
         setTimeout(() => {
-            this.textContent = "Копировать";
+            this.textContent = "Скопировать название";
         }, 2000);
     });
 })

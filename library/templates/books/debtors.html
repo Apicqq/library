@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Список должников
+{% endblock title %}
+{% block content %}
+{% for debtor in page_obj %}
+    <article class="mb-5">
+      {% include "includes/debtor.html" %}
+    </article>
+{% endfor %}
+{% include "includes/paginator.html" %}
+{% endblock %}

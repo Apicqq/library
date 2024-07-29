@@ -1,0 +1,12 @@
+<table>
+  <tr>
+    <th>Название</th>
+    <th>Дата получения книги</th>
+    <th>Книга на руках</th>
+  </tr>
+  <tr>
+    <td>{{ book.title }}</td>
+    <td>{{ book.borrowed_at|date }}</td>
+    <td>{{ book.borrowed_at|timesince }}</td>
+  </tr>
+</table>

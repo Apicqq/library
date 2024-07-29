@@ -1,7 +1,6 @@
-{% load static %}
 <div class="col d-flex justify-content-center">
   <div class="card" style="width: 40rem;">
-    <div class="card-body">
+    <div class="card-body" id="card-{{ book.pk }}">
       {% if book.cover %}
         <a href="{{ book.cover.url }}" target="_blank">
           <img
@@ -32,11 +31,10 @@
         <button type="submit" class="btn btn-outline-primary">Вернуть книгу
         </button>
       {% endif %}
-      <button class="btn btn-outline-primary 123" type="submit" id="copy-button"
+      <button class="btn btn-outline-secondary" type="submit" id="copy-button"
               data-toggle="tooltip"
               title="Скопировать">Скопировать название
       </button>
-      </form>
     </div>
   </div>
 </div>

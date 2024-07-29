@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Лента записей
+{% endblock %}
+{% block content %}
+  {% for book in page_obj %}
+    <article class="mb-5">
+      {% include "includes/book_card.html" %}
+    </article>
+  {% endfor %}
+  {% include "includes/paginator.html" %}
+{% endblock %}
+{% block scripts %}
+  <script type="text/javascript"
+          src="{% static "js/jquery.js" %}"></script>
+  <script>
+      {% include "includes/scripts/copy-text.js" %}
+  </script>
+  <script>
+      {% include "includes/scripts/confirmator.js" %}
+  </script>
+{% endblock scripts %}

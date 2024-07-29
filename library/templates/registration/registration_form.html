@@ -11,7 +11,7 @@
         <form method="post">
           {% csrf_token %}
           {% for field in form %}
-            {% bootstrap_field field id="asd123" %}
+            {% bootstrap_field field %}
           {% endfor %}
           {% bootstrap_button button_type="submit" content="Создать" %}
         </form>

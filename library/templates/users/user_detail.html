@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 {% block title %}
   Страница пользователя {{ profile }}
 {% endblock %}
@@ -6,28 +7,31 @@
   <h1 class="mb-5 text-center ">Страница пользователя {{ profile }}</h1>
   <small>
     <ul class="list-group list-group-horizontal justify-content-center mb-3">
-      <li class="list-group-item text-muted">Имя пользователя: {% if profile.get_full_name %}{{ profile.get_full_name }}{% else %}не указано{% endif %}</li>
-      <li class="list-group-item text-muted">Регистрация: {{ profile.date_joined }}</li>
-    {% if profile.is_reader %}
-   <li class="list-group-item text-muted">Адрес проживания:{% if profile.readerextrafields %} {{ profile.readerextrafields.address }} {% else %} Не указано{% endif %}</li>
-    {% else %}
-    <li class="list-group-item text-muted">Табельный номер:{% if profile.libextrafields %} {{ profile.libextrafields.table_number }}{% else %} Не указано {% endif %}</li>
-    {% endif %}
-      <li class="list-group-item text-muted">Роль: {% if profile.is_librarian %}Библиотекарь{% else %}Читатель{% endif %}</li>
+      <li class="list-group-item text-muted">Имя пользователя:
+        {% if profile.get_full_name %}{{ profile.get_full_name }}{% else %}не
+          указано{% endif %}</li>
+      <li class="list-group-item text-muted">
+        Регистрация: {{ profile.date_joined }}</li>
+      {% if profile.is_reader %}
+        <li class="list-group-item text-muted">Адрес проживания:
+          {% if profile.readerextrafields %}
+            {{ profile.readerextrafields.address }} {% else %} Не
+            указано{% endif %}</li>
+      {% else %}
+        <li class="list-group-item text-muted">Табельный номер:
+          {% if profile.libextrafields %}
+            {{ profile.libextrafields.table_number }}{% else %} Не
+            указано {% endif %}</li>
+      {% endif %}
+      <li class="list-group-item text-muted">Роль:
+        {% if profile.is_librarian %}Библиотекарь{% else %}
+          Читатель{% endif %}</li>
     </ul>
     <ul class="list-group list-group-horizontal justify-content-center">
       {% if user.is_authenticated and request.user == profile %}
-      <a class="btn btn-sm text-muted" href="{% url "users:edit_profile" username=request.user %}">Редактировать профиль</a>
-      <a class="btn btn-sm text-muted" href="{% url 'users:password_change' %}">Изменить пароль</a>
+        <a class="btn btn-sm text-muted"
+           href="{% url 'users:password_change' %}">Изменить пароль</a>
       {% endif %}
     </ul>
   </small>
-  <br>
-{#  <h3 class="mb-5 text-center">Публикации пользователя</h3>#}
-{#  {% for post in page_obj %}#}
-{#    <article class="mb-5">#}
-{#      {% include "includes/post_card.html" %}#}
-{#    </article>#}
-{#  {% endfor %}#}
-{#  {% include "includes/paginator.html" %}#}
 {% endblock %}

@@ -1,8 +1,9 @@
+from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class LibrarianManager(models.Manager):
+class LibrarianManager(BaseUserManager):
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
@@ -10,7 +11,7 @@ class LibrarianManager(models.Manager):
         )
 
 
-class ReaderManager(models.Manager):
+class ReaderManager(BaseUserManager):
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
@@ -29,6 +30,10 @@ class User(AbstractUser):
         max_length=10,
         choices=Roles.choices,
         default=base_type
+    )
+    ever_rented_a_book = models.BooleanField(
+        default=False,
+        verbose_name="Когда-либо брал книгу напрокат",
     )
 
     @property

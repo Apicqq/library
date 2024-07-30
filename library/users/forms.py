@@ -9,6 +9,10 @@ User = get_user_model()
 
 
 class RegistrationForm(UserCreationForm):
+    """
+    Форма для регистрации пользователей через веб-интерфейс.
+    """
+
     role = forms.ChoiceField(
         choices=User.Roles.choices,
         label=_(UserConstants.ROLE),
@@ -54,6 +58,8 @@ class RegistrationForm(UserCreationForm):
 
 
 class ReaderAdminForm(BaseUserCreationForm):
+    """Форма для админ-панели читателей."""
+
     address = forms.CharField(max_length=100, required=False,
                               help_text=_(UserConstants.FIELD_FOR_READERS),
                               label=_(UserConstants.ADDRESS), )
@@ -80,6 +86,8 @@ class ReaderAdminForm(BaseUserCreationForm):
 
 
 class LibrarianAdminForm(BaseUserCreationForm):
+    """Форма для админ-панели библиотекарей."""
+
     table_number = forms.IntegerField(required=False,
                                       help_text=_(
                                           UserConstants.FIELD_FOR_LIBRARIANS),

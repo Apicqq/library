@@ -4,6 +4,11 @@ from core.constants import UserConstants
 
 
 class HasRentedBooksFilter(admin.SimpleListFilter):
+    """
+    Кастомный фильтр для админ-панели читателей. Позволяет фильтровать
+    пользователей, которые в данный момент имеют книги на руках.
+    """
+
     title = UserConstants.HAS_BOOKS_RENTED.value
     parameter_name = 'has_rented_books'
 

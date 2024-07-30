@@ -1,7 +1,10 @@
+"""Константы, использующиеся в проекте."""
 from enum import Enum
 
 
 class BookConstants(str, Enum):
+    """Константы для модели Книги."""
+
     TITLE = "Название"
     AUTHOR = "Автор"
     GENRE = "Жанр"
@@ -18,6 +21,8 @@ class BookConstants(str, Enum):
 
 
 class Errors(str, Enum):
+    """Константы текстовых сообщений об ошибках."""
+
     NOT_AUTHORIZED_TO_RENT = "У вас нет прав для добавления книг в картотеку."
     BOOK_IS_RENTED = ("Вы не можете взять эту книгу в аренду, т.к. она уже "
                       "занята другим читателем.")
@@ -27,6 +32,8 @@ class Errors(str, Enum):
 
 
 class UserConstants(str, Enum):
+    """Константы, использующиеся для моделей Пользователей."""
+
     LIBRARIAN = "Библиотекарь"
     LIBRARIANS = "Библиотекари"
     READER = "Читатель"

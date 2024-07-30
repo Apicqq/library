@@ -4,7 +4,10 @@ from django.db import models
 
 from core.constants import UserConstants
 
+
 class LibrarianManager(BaseUserManager):
+    """Менеджер для библиотекарей, возвращает пользователей с ролью
+    'librarian'."""
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
@@ -13,6 +16,7 @@ class LibrarianManager(BaseUserManager):
 
 
 class ReaderManager(BaseUserManager):
+    """Менеджер для читателей, возвращает пользователей с ролью 'reader'."""
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
@@ -21,6 +25,11 @@ class ReaderManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    """
+    Базовый класс пользователей. Наследуемся от AbstractUser и дополняем
+    его дополнительными полями для нужд приложения.
+    """
+
     class Roles(models.TextChoices):
         LIBRARIAN = "LIBRARIAN", UserConstants.LIBRARIAN.value
         READER = "READER", UserConstants.READER.value
@@ -55,11 +64,18 @@ class User(AbstractUser):
 
 
 class LibExtraFields(models.Model):
+    """
+    Дополнительные поля для библиотекарей. Размещены в отдельной сущности
+    из-за использования прокси-модели.
+    """
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     table_number = models.IntegerField(default=0)
 
 
 class Librarian(User):
+    """Прокси-модель для библиотекарей."""
+
     objects = LibrarianManager()
 
     base_type = User.Roles.LIBRARIAN
@@ -75,6 +91,10 @@ class Librarian(User):
 
 
 class ReaderExtraFields(models.Model):
+    """
+    Дополнительные поля для читателей. Размещены в отдельной сущности
+    из-за использования прокси-модели.
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(
         UserConstants.ADDRESS.value,
@@ -85,6 +105,8 @@ class ReaderExtraFields(models.Model):
 
 
 class Reader(User):
+    """Прокси-модель для читателей."""
+
     objects = ReaderManager()
 
     base_type = User.Roles.READER

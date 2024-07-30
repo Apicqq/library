@@ -8,6 +8,8 @@ from users.models import Librarian, Reader, LibExtraFields, ReaderExtraFields
 
 @admin.register(Librarian)
 class LibrarianAdmin(admin.ModelAdmin):
+    """Админ-панель для читателей."""
+
     list_display = (
         "username", "first_name", "last_name", "table_number")
     form = LibrarianAdminForm
@@ -27,6 +29,12 @@ class LibrarianAdmin(admin.ModelAdmin):
 
 @admin.register(Reader)
 class ReaderAdmin(admin.ModelAdmin):
+    """Админ-панель для читателей.
+    Помимо базового функционала, позволяет просматривать/редактировать
+    списки пользователей, которые когда-либо брали книгу в аренду,
+    а также тех, кто имеет книги на руках.
+    """
+
     list_display = (
         "username", "first_name", "last_name", "address", "ever_rented_a_book",
         "has_rented_books"
@@ -50,4 +58,3 @@ class ReaderAdmin(admin.ModelAdmin):
                 user=instance
             ).update(address=form.data.get("address"))
             instance.save()
-

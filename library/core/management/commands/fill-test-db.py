@@ -5,6 +5,11 @@ from core.data_factories.factories import BookFactory, ReaderFactory, \
 
 
 class Command(BaseCommand):
+    """
+    Команда, позволяющая добавлять в тестовую базу данных фикстуры
+    существующих моделей, будь то книга, читатель или библиотекарь через CLI.
+    """
+
     help = "Добавляет в тестовую базу данных фикстуры."
 
     def handle(self, *args, **options):

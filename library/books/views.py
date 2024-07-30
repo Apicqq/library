@@ -12,6 +12,11 @@ from users.models import Reader
 
 
 class BooksListView(ListView):
+    """
+    Представление для списка всех книг, используется на главной странице
+    веб-приложения.
+    """
+
     model = Book
     template_name = "books/index.html"
     context_object_name = "books"
@@ -19,6 +24,10 @@ class BooksListView(ListView):
 
 
 class MyBooksListView(BooksListView):
+    """
+    Список книг, которые текущий пользователь взял на руки.
+    """
+
     ordering = "title"
 
     def get_queryset(self):
@@ -26,6 +35,10 @@ class MyBooksListView(BooksListView):
 
 
 class BookCreateView(CreateView):
+    """
+    Представление для добавления книги библиотекарем через веб-интерфейс.
+    """
+
     model = Book
     form_class = BookCreateForm
     success_url = reverse_lazy("books:index")
@@ -44,6 +57,10 @@ class BookCreateView(CreateView):
 
 
 class LibrarianDebtorsListView(ListView):
+    """
+    Список должников, которые взяли книги на руки в библиотеке.
+    """
+
     model = Reader
     template_name = "books/debtors.html"
     context_object_name = "users"
@@ -52,6 +69,9 @@ class LibrarianDebtorsListView(ListView):
 
 @login_required
 def rent_a_book(request, pk):
+    """
+    Выдать книгу на руки пользователю.
+    """
     user = request.user
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
@@ -72,6 +92,9 @@ def rent_a_book(request, pk):
 
 @login_required
 def return_a_book(request, pk):
+    """
+    Вернуть книгу в библиотеку.
+    """
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
         if book.is_rented and book.reader == request.user:

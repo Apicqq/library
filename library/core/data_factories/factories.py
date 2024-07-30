@@ -8,6 +8,10 @@ from users.models import User, Reader, Librarian, ReaderExtraFields, \
 
 
 class BaseUserFactory(factory.django.DjangoModelFactory):
+    """
+    Базовая фабрика для создания пользователей.
+    """
+
     class Meta:
         model = User
 
@@ -19,6 +23,10 @@ class BaseUserFactory(factory.django.DjangoModelFactory):
 
 
 class ReaderFactory(BaseUserFactory):
+    """
+    Фабрика для создания читателей.
+    """
+
     class Meta:
         model = Reader
 
@@ -34,6 +42,9 @@ class ReaderFactory(BaseUserFactory):
 
 
 class LibrarianFactory(BaseUserFactory):
+    """
+    Фабрика для создания библиотекарей.
+    """
     class Meta:
         model = Librarian
 
@@ -50,6 +61,10 @@ class LibrarianFactory(BaseUserFactory):
 
 
 class BookFactory(DjangoModelFactory):
+    """
+    Фабрика для создания книг.
+    """
+
     class Meta:
         model = Book
 

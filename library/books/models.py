@@ -8,6 +8,7 @@ from core.constants import BookConstants
 
 
 class Book(models.Model):
+    """Модель для хранения информации о книгах в библиотеке."""
     title = models.CharField(
         BookConstants.TITLE.value, max_length=100)
     author = models.CharField(BookConstants.AUTHOR.value, max_length=100)

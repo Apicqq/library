@@ -4,18 +4,19 @@ from simple_history.admin import SimpleHistoryAdmin
 from books.models import Book
 
 
-# Register your models here.
-
 @admin.register(Book)
 class BookAdmin(SimpleHistoryAdmin):
+    """Базовая админ панель для модели Книг."""
+
     list_display = (
         "title",
         "author",
         "genre",
         "year",
         "cover",
-        "is_borrowed",
-        "borrowed_at",
+        "added_at",
+        "is_rented",
+        "rented_at",
         "reader",
     )
-    list_filter = ("is_borrowed",)
+    list_filter = ("is_rented",)

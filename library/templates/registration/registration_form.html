@@ -19,7 +19,9 @@
     </div>
   </div>
 {% endblock %}
-  {% block scripts %}
+{% block scripts %}
+  <script type="text/javascript"
+          src="{% static "js/jquery.js" %}"></script>
   <script>
       $(document).ready(function () {
           $('#id_role').change(function () {

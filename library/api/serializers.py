@@ -7,6 +7,7 @@ from books.models import Book
 
 class BookSerializer(ModelSerializer):
     """Сериалайзер, использующийся для получения всего списка книг."""
+
     class Meta:
         model = Book
         fields = (
@@ -27,7 +28,6 @@ class BookOnHandsSerializer(ModelSerializer):
     borrowed_at = DateTimeField(
         read_only=True,
         format="%d-%m-%Y %H:%M:%S",
-
     )
     days_since_borrowed = SerializerMethodField(
         read_only=True,

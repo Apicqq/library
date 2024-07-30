@@ -1,7 +1,10 @@
 from django.core.management.base import BaseCommand
 
-from core.data_factories.factories import BookFactory, ReaderFactory, \
-    LibrarianFactory
+from core.data_factories.factories import (
+    BookFactory,
+    ReaderFactory,
+    LibrarianFactory,
+)
 
 
 class Command(BaseCommand):
@@ -17,23 +20,29 @@ class Command(BaseCommand):
 
         if books:
             BookFactory.create_batch(amount)
-            return self.stdout.write(self.style.SUCCESS(
-                f"{amount} фикстур для книг добавлено в БД."
-            ))
+            return self.stdout.write(
+                self.style.SUCCESS(
+                    f"{amount} фикстур для книг добавлено в БД."
+                )
+            )
 
         readers, librarians = options.get("readers"), options.get("librarians")
 
         if readers:
             ReaderFactory.create_batch(amount)
-            return self.stdout.write(self.style.SUCCESS(
-                f"{amount} фикстур для читателей добавлено в БД."
-            ))
+            return self.stdout.write(
+                self.style.SUCCESS(
+                    f"{amount} фикстур для читателей добавлено в БД."
+                )
+            )
 
         if librarians:
             LibrarianFactory.create_batch(amount)
-            return self.stdout.write(self.style.SUCCESS(
-                f"{amount} фикстур для библиотекарей добавлено в БД."
-            ))
+            return self.stdout.write(
+                self.style.SUCCESS(
+                    f"{amount} фикстур для библиотекарей добавлено в БД."
+                )
+            )
 
     def add_arguments(self, parser):
         parser.add_argument(

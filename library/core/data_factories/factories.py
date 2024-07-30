@@ -3,8 +3,13 @@ from factory.django import DjangoModelFactory
 from faker import Faker
 
 from books.models import Book
-from users.models import User, Reader, Librarian, ReaderExtraFields, \
-    LibExtraFields
+from users.models import (
+    User,
+    Reader,
+    Librarian,
+    ReaderExtraFields,
+    LibExtraFields,
+)
 
 
 class BaseUserFactory(factory.django.DjangoModelFactory):
@@ -45,6 +50,7 @@ class LibrarianFactory(BaseUserFactory):
     """
     Фабрика для создания библиотекарей.
     """
+
     class Meta:
         model = Librarian
 
@@ -55,7 +61,7 @@ class LibrarianFactory(BaseUserFactory):
         if create:
             created_data = LibExtraFields.objects.create(
                 user=self,
-                table_number=Faker(locale="ru_RU").pyint(min_value=1)
+                table_number=Faker(locale="ru_RU").pyint(min_value=1),
             )
             created_data.save()
 

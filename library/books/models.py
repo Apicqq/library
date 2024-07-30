@@ -9,32 +9,29 @@ from core.constants import BookConstants
 
 class Book(models.Model):
     """Модель для хранения информации о книгах в библиотеке."""
-    title = models.CharField(
-        BookConstants.TITLE.value, max_length=100)
+
+    title = models.CharField(BookConstants.TITLE.value, max_length=100)
     author = models.CharField(BookConstants.AUTHOR.value, max_length=100)
     genre = models.CharField(BookConstants.GENRE.value, max_length=100)
-    year = models.IntegerField(BookConstants.YEAR.value,
-                               validators=[validate_book_year,
-                                           MinValueValidator(0),
-                                           MaxValueValidator(now().year)], )
+    year = models.IntegerField(
+        BookConstants.YEAR.value,
+        validators=[
+            validate_book_year,
+            MinValueValidator(0),
+            MaxValueValidator(now().year),
+        ],
+    )
     cover = models.ImageField(
-        BookConstants.COVER.value,
-        upload_to="covers/",
-        blank=True,
-        null=True
+        BookConstants.COVER.value, upload_to="covers/", blank=True, null=True
     )
     added_at = models.DateTimeField(
-        BookConstants.ADDED_AT.value,
-        auto_now_add=True
+        BookConstants.ADDED_AT.value, auto_now_add=True
     )
     is_rented = models.BooleanField(
-        BookConstants.IS_BORROWED.value,
-        default=False
+        BookConstants.IS_BORROWED.value, default=False
     )
     rented_at = models.DateTimeField(
-        BookConstants.BORROWED_AT.value,
-        null=True,
-        blank=True
+        BookConstants.BORROWED_AT.value, null=True, blank=True
     )
     reader = models.ForeignKey(
         "users.User",

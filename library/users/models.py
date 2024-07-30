@@ -10,8 +10,10 @@ class LibrarianManager(BaseUserManager):
     'librarian'."""
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(
-            role=User.Roles.LIBRARIAN
+        return (
+            super()
+            .get_queryset(*args, **kwargs)
+            .filter(role=User.Roles.LIBRARIAN)
         )
 
 
@@ -19,8 +21,10 @@ class ReaderManager(BaseUserManager):
     """Менеджер для читателей, возвращает пользователей с ролью 'reader'."""
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(
-            role=User.Roles.READER
+        return (
+            super()
+            .get_queryset(*args, **kwargs)
+            .filter(role=User.Roles.READER)
         )
 
 
@@ -37,9 +41,7 @@ class User(AbstractUser):
     base_type = Roles.READER
 
     role = models.CharField(
-        max_length=10,
-        choices=Roles.choices,
-        default=base_type
+        max_length=10, choices=Roles.choices, default=base_type
     )
     ever_rented_a_book = models.BooleanField(
         default=False,
@@ -95,6 +97,7 @@ class ReaderExtraFields(models.Model):
     Дополнительные поля для читателей. Размещены в отдельной сущности
     из-за использования прокси-модели.
     """
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(
         UserConstants.ADDRESS.value,

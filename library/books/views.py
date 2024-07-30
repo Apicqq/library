@@ -46,9 +46,7 @@ class BookCreateView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_librarian:
-            raise PermissionDenied(
-                Errors.NOT_AUTHORIZED_TO_RENT
-            )
+            raise PermissionDenied(Errors.NOT_AUTHORIZED_TO_RENT)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -76,9 +74,7 @@ def rent_a_book(request, pk):
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
         if book.is_rented:
-            raise PermissionDenied(
-                Errors.BOOK_IS_RENTED.value
-            )
+            raise PermissionDenied(Errors.BOOK_IS_RENTED.value)
         else:
             book.reader = request.user
             request.user.ever_rented_a_book = True

@@ -43,7 +43,7 @@ def get_dynamic_fields(request):
     Позволяет динамически скрывать поля неактуальные поля во время регистрации.
     Если пользователь — читатель, то скрывает поле "адрес", и наоборот.
     """
-    role = request.GET.get('role')
+    role = request.GET.get("role")
     if role == "READER":
         fields = {"address": "visible", "tab_number": "hidden"}
     elif role == "LIBRARIAN":

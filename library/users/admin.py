@@ -10,8 +10,7 @@ from users.models import Librarian, Reader, LibExtraFields, ReaderExtraFields
 class LibrarianAdmin(admin.ModelAdmin):
     """Админ-панель для читателей."""
 
-    list_display = (
-        "username", "first_name", "last_name", "table_number")
+    list_display = ("username", "first_name", "last_name", "table_number")
     form = LibrarianAdminForm
 
     @admin.action(description=UserConstants.TABLE_NUMBER.value)
@@ -21,9 +20,9 @@ class LibrarianAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         instance = form.instance
         if change:
-            LibExtraFields.objects.filter(
-                user=instance
-            ).update(table_number=form.data.get("table_number"))
+            LibExtraFields.objects.filter(user=instance).update(
+                table_number=form.data.get("table_number")
+            )
             instance.save()
 
 
@@ -36,8 +35,12 @@ class ReaderAdmin(admin.ModelAdmin):
     """
 
     list_display = (
-        "username", "first_name", "last_name", "address", "ever_rented_a_book",
-        "has_rented_books"
+        "username",
+        "first_name",
+        "last_name",
+        "address",
+        "ever_rented_a_book",
+        "has_rented_books",
     )
     form = ReaderAdminForm
     list_filter = ("ever_rented_a_book", HasRentedBooksFilter)
@@ -46,15 +49,16 @@ class ReaderAdmin(admin.ModelAdmin):
     def address(self, obj):
         return obj.reader_extra_fields.address
 
-    @admin.display(description=UserConstants.HAS_BOOKS_RENTED.value,
-                   boolean=True)
+    @admin.display(
+        description=UserConstants.HAS_BOOKS_RENTED.value, boolean=True
+    )
     def has_rented_books(self, obj):
         return len(obj.books.all()) > 0
 
     def save_model(self, request, obj, form, change):
         instance = form.instance
         if change:
-            ReaderExtraFields.objects.filter(
-                user=instance
-            ).update(address=form.data.get("address"))
+            ReaderExtraFields.objects.filter(user=instance).update(
+                address=form.data.get("address")
+            )
             instance.save()

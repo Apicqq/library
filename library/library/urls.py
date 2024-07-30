@@ -7,11 +7,10 @@ from core import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('books.urls')),
-    path('users/', include('users.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("books.urls")),
+    path("users/", include("users.urls")),
     path("api/", include("api.urls")),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

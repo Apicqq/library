@@ -29,9 +29,18 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(max_length=100, verbose_name="Название")),
-                ("author", models.CharField(max_length=100, verbose_name="Автор")),
-                ("genre", models.CharField(max_length=100, verbose_name="Жанр")),
+                (
+                    "title",
+                    models.CharField(max_length=100, verbose_name="Название"),
+                ),
+                (
+                    "author",
+                    models.CharField(max_length=100, verbose_name="Автор"),
+                ),
+                (
+                    "genre",
+                    models.CharField(max_length=100, verbose_name="Жанр"),
+                ),
                 (
                     "year",
                     models.IntegerField(
@@ -55,7 +64,8 @@ class Migration(migrations.Migration):
                 (
                     "added_at",
                     models.DateTimeField(
-                        auto_now_add=True, verbose_name="Книга добавлена в картотеку"
+                        auto_now_add=True,
+                        verbose_name="Книга добавлена в картотеку",
                     ),
                 ),
                 (
@@ -67,7 +77,9 @@ class Migration(migrations.Migration):
                 (
                     "rented_at",
                     models.DateTimeField(
-                        blank=True, null=True, verbose_name="Дата взятия в прочтение"
+                        blank=True,
+                        null=True,
+                        verbose_name="Дата взятия в прочтение",
                     ),
                 ),
                 (
@@ -94,12 +106,24 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigIntegerField(
-                        auto_created=True, blank=True, db_index=True, verbose_name="ID"
+                        auto_created=True,
+                        blank=True,
+                        db_index=True,
+                        verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(max_length=100, verbose_name="Название")),
-                ("author", models.CharField(max_length=100, verbose_name="Автор")),
-                ("genre", models.CharField(max_length=100, verbose_name="Жанр")),
+                (
+                    "title",
+                    models.CharField(max_length=100, verbose_name="Название"),
+                ),
+                (
+                    "author",
+                    models.CharField(max_length=100, verbose_name="Автор"),
+                ),
+                (
+                    "genre",
+                    models.CharField(max_length=100, verbose_name="Жанр"),
+                ),
                 (
                     "year",
                     models.IntegerField(
@@ -114,7 +138,10 @@ class Migration(migrations.Migration):
                 (
                     "cover",
                     models.TextField(
-                        blank=True, max_length=100, null=True, verbose_name="Обложка"
+                        blank=True,
+                        max_length=100,
+                        null=True,
+                        verbose_name="Обложка",
                     ),
                 ),
                 (
@@ -134,16 +161,28 @@ class Migration(migrations.Migration):
                 (
                     "rented_at",
                     models.DateTimeField(
-                        blank=True, null=True, verbose_name="Дата взятия в прочтение"
+                        blank=True,
+                        null=True,
+                        verbose_name="Дата взятия в прочтение",
                     ),
                 ),
-                ("history_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "history_id",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
                 ("history_date", models.DateTimeField(db_index=True)),
-                ("history_change_reason", models.CharField(max_length=100, null=True)),
+                (
+                    "history_change_reason",
+                    models.CharField(max_length=100, null=True),
+                ),
                 (
                     "history_type",
                     models.CharField(
-                        choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")],
+                        choices=[
+                            ("+", "Created"),
+                            ("~", "Changed"),
+                            ("-", "Deleted"),
+                        ],
                         max_length=1,
                     ),
                 ),

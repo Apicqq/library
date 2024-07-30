@@ -18,19 +18,29 @@ class RegistrationForm(UserCreationForm):
         label=_(UserConstants.ROLE),
         help_text=_(UserConstants.CHOOSE_YOUR_ROLE),
     )
-    first_name = forms.CharField(max_length=30, required=False,
-                                 help_text=_(UserConstants.NON_REQUIRED_FIELD),
-                                 label=_(UserConstants.FIRST_NAME))
-    last_name = forms.CharField(max_length=30, required=False,
-                                help_text=_(UserConstants.NON_REQUIRED_FIELD),
-                                label=_(UserConstants.LAST_NAME))
-    address = forms.CharField(max_length=100, required=False,
-                              help_text=_(UserConstants.FIELD_FOR_READERS),
-                              label=_(UserConstants.ADDRESS), )
-    table_number = forms.IntegerField(required=False,
-                                      help_text=_(
-                                          UserConstants.FIELD_FOR_LIBRARIANS),
-                                      label=_(UserConstants.TABLE_NUMBER))
+    first_name = forms.CharField(
+        max_length=30,
+        required=False,
+        help_text=_(UserConstants.NON_REQUIRED_FIELD),
+        label=_(UserConstants.FIRST_NAME),
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        required=False,
+        help_text=_(UserConstants.NON_REQUIRED_FIELD),
+        label=_(UserConstants.LAST_NAME),
+    )
+    address = forms.CharField(
+        max_length=100,
+        required=False,
+        help_text=_(UserConstants.FIELD_FOR_READERS),
+        label=_(UserConstants.ADDRESS),
+    )
+    table_number = forms.IntegerField(
+        required=False,
+        help_text=_(UserConstants.FIELD_FOR_LIBRARIANS),
+        label=_(UserConstants.TABLE_NUMBER),
+    )
 
     def save(self, commit=True):
         match self.cleaned_data["role"]:
@@ -46,29 +56,33 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = [
             "role",
-            'username',
-            'first_name',
-            'last_name',
+            "username",
+            "first_name",
+            "last_name",
             "address",
             "table_number",
-            'email',
-            'password1',
-            'password2',
+            "email",
+            "password1",
+            "password2",
         ]
 
 
 class ReaderAdminForm(BaseUserCreationForm):
     """Форма для админ-панели читателей."""
 
-    address = forms.CharField(max_length=100, required=False,
-                              help_text=_(UserConstants.FIELD_FOR_READERS),
-                              label=_(UserConstants.ADDRESS), )
+    address = forms.CharField(
+        max_length=100,
+        required=False,
+        help_text=_(UserConstants.FIELD_FOR_READERS),
+        label=_(UserConstants.ADDRESS),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.initial:
-            self.fields[
-                "address"].initial = self.instance.reader_extra_fields.address
+            self.fields["address"].initial = (
+                self.instance.reader_extra_fields.address
+            )
             self.fields["password1"].required = False
             self.fields["password2"].required = False
 
@@ -88,16 +102,18 @@ class ReaderAdminForm(BaseUserCreationForm):
 class LibrarianAdminForm(BaseUserCreationForm):
     """Форма для админ-панели библиотекарей."""
 
-    table_number = forms.IntegerField(required=False,
-                                      help_text=_(
-                                          UserConstants.FIELD_FOR_LIBRARIANS),
-                                      label=_(UserConstants.TABLE_NUMBER))
+    table_number = forms.IntegerField(
+        required=False,
+        help_text=_(UserConstants.FIELD_FOR_LIBRARIANS),
+        label=_(UserConstants.TABLE_NUMBER),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.initial:
-            self.fields[
-                "table_number"].initial = self.instance.lib_extra_fields.table_number
+            self.fields["table_number"].initial = (
+                self.instance.lib_extra_fields.table_number
+            )
             self.fields["password1"].required = False
             self.fields["password2"].required = False
 

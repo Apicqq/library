@@ -13,11 +13,9 @@ def populate_extra_fields(sender, instance, created, **kwargs):
     if created:
         if instance.is_reader:
             obj, created = ReaderExtraFields.objects.update_or_create(
-                user=instance,
-                address=instance.address
+                user=instance, address=instance.address
             )
         else:
             obj, created = LibExtraFields.objects.update_or_create(
-                user=instance,
-                table_number=instance.table_number
+                user=instance, table_number=instance.table_number
             )

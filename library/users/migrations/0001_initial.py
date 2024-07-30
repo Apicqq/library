@@ -29,7 +29,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "password",
+                    models.CharField(max_length=128, verbose_name="password"),
+                ),
                 (
                     "last_login",
                     models.DateTimeField(
@@ -74,7 +77,9 @@ class Migration(migrations.Migration):
                 (
                     "email",
                     models.EmailField(
-                        blank=True, max_length=254, verbose_name="email address"
+                        blank=True,
+                        max_length=254,
+                        verbose_name="email address",
                     ),
                 ),
                 (
@@ -96,13 +101,17 @@ class Migration(migrations.Migration):
                 (
                     "date_joined",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
+                        default=django.utils.timezone.now,
+                        verbose_name="date joined",
                     ),
                 ),
                 (
                     "role",
                     models.CharField(
-                        choices=[("LIBRARIAN", "Библиотекарь"), ("READER", "Читатель")],
+                        choices=[
+                            ("LIBRARIAN", "Библиотекарь"),
+                            ("READER", "Читатель"),
+                        ],
                         default="READER",
                         max_length=10,
                     ),
@@ -110,7 +119,8 @@ class Migration(migrations.Migration):
                 (
                     "ever_rented_a_book",
                     models.BooleanField(
-                        default=False, verbose_name="Когда-либо брал книгу напрокат"
+                        default=False,
+                        verbose_name="Когда-либо брал книгу напрокат",
                     ),
                 ),
                 (

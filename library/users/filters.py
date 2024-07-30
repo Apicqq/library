@@ -1,8 +1,10 @@
 from django.contrib import admin
 
+from core.constants import UserConstants
+
 
 class HasRentedBooksFilter(admin.SimpleListFilter):
-    title = 'Есть книги на руках'
+    title = UserConstants.HAS_BOOKS_RENTED.value
     parameter_name = 'has_rented_books'
 
     def lookups(self, request, model_admin):

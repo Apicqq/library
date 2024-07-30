@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.timezone import now
 from django.views.generic import ListView, CreateView
 
+from core.constants import Errors
 from books.forms import BookCreateForm
 from books.models import Book
 from users.models import Reader
@@ -33,7 +34,7 @@ class BookCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_librarian:
             raise PermissionDenied(
-                "У вас нет прав для добавления книг в картотеку."
+                Errors.NOT_AUTHORIZED_TO_RENT
             )
         return super().dispatch(request, *args, **kwargs)
 
@@ -54,16 +55,15 @@ def rent_a_book(request, pk):
     user = request.user
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
-        if book.is_borrowed:
+        if book.is_rented:
             raise PermissionDenied(
-                "Вы не можете взять эту книгу в аренду, т.к. она уже "
-                "занята другим читателем."
+                Errors.BOOK_IS_RENTED.value
             )
         else:
             book.reader = request.user
             request.user.ever_rented_a_book = True
-            book.is_borrowed = True
-            book.borrowed_at = now()
+            book.is_rented = True
+            book.rented_at = now()
             user.ever_rented_a_book = True
             user.save()
         book.save()
@@ -74,9 +74,9 @@ def rent_a_book(request, pk):
 def return_a_book(request, pk):
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
-        if book.is_borrowed and book.reader == request.user:
+        if book.is_rented and book.reader == request.user:
             book.reader = None
-            book.is_borrowed = False
-            book.borrowed_at = None
+            book.is_rented = False
+            book.rented_at = None
             book.save()
     return redirect(request.META.get("HTTP_REFERER"))

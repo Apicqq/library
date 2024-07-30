@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, BaseUserCreationForm
 from django.utils.translation import gettext_lazy as _
+
+from core.constants import UserConstants
 
 User = get_user_model()
 
@@ -9,25 +11,22 @@ User = get_user_model()
 class RegistrationForm(UserCreationForm):
     role = forms.ChoiceField(
         choices=User.Roles.choices,
-        label=_('Роль'),
-        help_text=_('Выберите роль пользователя.'),
+        label=_(UserConstants.ROLE),
+        help_text=_(UserConstants.CHOOSE_YOUR_ROLE),
     )
     first_name = forms.CharField(max_length=30, required=False,
-                                 help_text='Необязательное поле.',
-                                 label=_('Имя'))
+                                 help_text=_(UserConstants.NON_REQUIRED_FIELD),
+                                 label=_(UserConstants.FIRST_NAME))
     last_name = forms.CharField(max_length=30, required=False,
-                                help_text='Необязательное поле.',
-                                label=_('Фамилия'))
-    email = forms.EmailField(max_length=254,
-                             help_text='Введите актуальный'
-                                       ' адрес электронной почты.',
-                             label=_('Электронная почта'))
+                                help_text=_(UserConstants.NON_REQUIRED_FIELD),
+                                label=_(UserConstants.LAST_NAME))
     address = forms.CharField(max_length=100, required=False,
-                              help_text='Для читателей.',
-                              label=_('Адрес проживания'), )
+                              help_text=_(UserConstants.FIELD_FOR_READERS),
+                              label=_(UserConstants.ADDRESS), )
     table_number = forms.IntegerField(required=False,
-                                      help_text='Для библиотекарей.',
-                                      label=_('Табельный номер'))
+                                      help_text=_(
+                                          UserConstants.FIELD_FOR_LIBRARIANS),
+                                      label=_(UserConstants.TABLE_NUMBER))
 
     def save(self, commit=True):
         match self.cleaned_data["role"]:
@@ -54,16 +53,54 @@ class RegistrationForm(UserCreationForm):
         ]
 
 
-class AdminUserForm(RegistrationForm):
+class ReaderAdminForm(BaseUserCreationForm):
+    address = forms.CharField(max_length=100, required=False,
+                              help_text=_(UserConstants.FIELD_FOR_READERS),
+                              label=_(UserConstants.ADDRESS), )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.initial:
+            self.fields[
+                "address"].initial = self.instance.reader_extra_fields.address
+            self.fields["password1"].required = False
+            self.fields["password2"].required = False
+
     class Meta:
+        model = User
         fields = [
-            'username',
-            'first_name',
-            'last_name',
+            "username",
+            "first_name",
+            "last_name",
             "address",
-            "table_number",
-            'email',
-            'password1',
-            'password2',
+            "email",
+            "password1",
+            "password2",
         ]
-        exclude = ["role"]
+
+
+class LibrarianAdminForm(BaseUserCreationForm):
+    table_number = forms.IntegerField(required=False,
+                                      help_text=_(
+                                          UserConstants.FIELD_FOR_LIBRARIANS),
+                                      label=_(UserConstants.TABLE_NUMBER))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.initial:
+            self.fields[
+                "table_number"].initial = self.instance.lib_extra_fields.table_number
+            self.fields["password1"].required = False
+            self.fields["password2"].required = False
+
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "table_number",
+            "email",
+            "password1",
+            "password2",
+        ]

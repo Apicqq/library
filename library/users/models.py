@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from core.constants import UserConstants
 
 class LibrarianManager(BaseUserManager):
 
@@ -21,8 +22,8 @@ class ReaderManager(BaseUserManager):
 
 class User(AbstractUser):
     class Roles(models.TextChoices):
-        LIBRARIAN = 'LIBRARIAN', 'Библиотекарь'
-        READER = 'READER', 'Читатель'
+        LIBRARIAN = "LIBRARIAN", UserConstants.LIBRARIAN.value
+        READER = "READER", UserConstants.READER.value
 
     base_type = Roles.READER
 
@@ -33,7 +34,7 @@ class User(AbstractUser):
     )
     ever_rented_a_book = models.BooleanField(
         default=False,
-        verbose_name="Когда-либо брал книгу напрокат",
+        verbose_name=UserConstants.EVER_RENTED_A_BOOK.value,
     )
 
     @property
@@ -49,6 +50,9 @@ class User(AbstractUser):
             self.type = self.base_type
         return super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.username
+
 
 class LibExtraFields(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -61,8 +65,8 @@ class Librarian(User):
     base_type = User.Roles.LIBRARIAN
 
     class Meta:
-        verbose_name = "Библиотекарь"
-        verbose_name_plural = "Библиотекари"
+        verbose_name = UserConstants.LIBRARIAN.value
+        verbose_name_plural = UserConstants.LIBRARIANS.value
         proxy = True
 
     @property
@@ -73,7 +77,7 @@ class Librarian(User):
 class ReaderExtraFields(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(
-        "Адрес проживания",
+        UserConstants.ADDRESS.value,
         max_length=100,
         blank=True,
         null=True,
@@ -86,8 +90,8 @@ class Reader(User):
     base_type = User.Roles.READER
 
     class Meta:
-        verbose_name = "Читатель"
-        verbose_name_plural = "Читатели"
+        verbose_name = UserConstants.READER.value
+        verbose_name_plural = UserConstants.READERS.value
         proxy = True
 
     @property

@@ -6,6 +6,7 @@ from books.models import Book
 
 
 class BookSerializer(ModelSerializer):
+    """Сериалайзер, использующийся для получения всего списка книг."""
     class Meta:
         model = Book
         fields = (
@@ -18,6 +19,11 @@ class BookSerializer(ModelSerializer):
 
 
 class BookOnHandsSerializer(ModelSerializer):
+    """
+    Сериалайзер, использующийся для получения списка книг на руках у
+    должника.
+    """
+
     borrowed_at = DateTimeField(
         read_only=True,
         format="%d-%m-%Y %H:%M:%S",
@@ -37,4 +43,7 @@ class BookOnHandsSerializer(ModelSerializer):
         )
 
     def get_days_since_borrowed(self, obj):
+        """
+        Возвращает количество дней, прошедших с даты выдачи книги.
+        """
         return (now() - obj.rented_at).days

@@ -1,8 +1,13 @@
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
+from core.constants import Errors
+
 
 class IsRenterReadOnly(BasePermission):
-    message = 'Действие недоступно для вас.'
+    """Пермишен, не позволяющий сдать книгу из аренды, если
+    пользователь изначально не брал её в аренду."""
+
+    message = Errors.ACTION_NOT_PERMITTED.value
 
     def has_permission(self, request, view):
         return (

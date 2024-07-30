@@ -13,6 +13,8 @@ class BookConstants(str, Enum):
     BOOK = "Книга"
     BOOKS = "Книги"
     ADDED_AT = "Книга добавлена в картотеку"
+    RENTED_SUCCESSFULLY = "Книга успешна взята в аренду"
+    RETURNED_SUCCESSFULLY = "Книга успешна возвращена"
 
 
 class Errors(str, Enum):
@@ -20,6 +22,8 @@ class Errors(str, Enum):
     BOOK_IS_RENTED = ("Вы не можете взять эту книгу в аренду, т.к. она уже "
                       "занята другим читателем.")
     INVALID_BOOK_YEAR = "Год выпуска книги не может быть больше текущего."
+    BOOK_NOT_RENTED = "Эта книга не взята в прочтение."
+    ACTION_NOT_PERMITTED = "Действие недоступно для вас."
 
 
 class UserConstants(str, Enum):

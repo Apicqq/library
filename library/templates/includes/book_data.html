@@ -5,8 +5,8 @@
     <th>Книга на руках</th>
   </tr>
   <tr>
-    <td>{{ book.title }}</td>
-    <td>{{ book.borrowed_at|date }}</td>
-    <td>{{ book.borrowed_at|timesince }}</td>
+    <td>{{ book.title|truncatechars:30 }}</td>
+    <td>{{ book.rented_at|date }}</td>
+    <td>{{ book.rented_at|timesince }}</td>
   </tr>
 </table>

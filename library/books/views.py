@@ -85,5 +85,8 @@ def return_a_book(request, pk):
     """
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
-        manage_books(request, book, "RETURN")
+        if not manage_books(request, book, "RETURN"):
+            raise PermissionDenied(
+                Errors.BOOK_NOT_RENTED.value
+            )
     return redirect(request.META.get("HTTP_REFERER"))

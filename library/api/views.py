@@ -8,6 +8,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from api.permissions import IsRenterReadOnly
 from api.serializers import BookSerializer, BookOnHandsSerializer
+from books.book_management import manage_books
 from books.models import Book
 from core.constants import BookConstants, Errors
 
@@ -40,17 +41,11 @@ class BookListViewSet(GenericViewSet):
     def rent(self, request, pk=None):
         """Выдать книгу на руки пользователю."""
         book = self.get_object()
-        if book.is_rented:
+        if not manage_books(request, book, "RENT"):
             return Response(
                 {"error": Errors.BOOK_IS_RENTED.value},
                 status=HTTPStatus.BAD_REQUEST,
             )
-        book.is_rented = True
-        book.rented_at = now()
-        book.reader = request.user
-        book.reader.ever_rented_a_book = True
-        book.reader.save()
-        book.save()
         return Response(
             {"success": BookConstants.RENTED_SUCCESSFULLY.value},
             status=HTTPStatus.OK,
@@ -69,14 +64,10 @@ class BookListViewSet(GenericViewSet):
     def return_book(self, request, pk=None):
         """Вернуть книгу в библиотеку."""
         book = self.get_object()
-        if not book.is_rented:
+        if not manage_books(request, book, "RETURN"):
             return Response(
                 {"error": Errors.BOOK_NOT_RENTED.value}, HTTPStatus.BAD_REQUEST
             )
-        book.is_rented = False
-        book.rented_at = None
-        book.reader = None
-        book.save()
         return Response(
             {"success": BookConstants.RETURNED_SUCCESSFULLY.value},
             status=HTTPStatus.OK,

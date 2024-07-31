@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from django.views.generic import ListView, CreateView
 
 from core.constants import Errors
+from books.book_management import manage_books
 from books.forms import BookCreateForm
 from books.models import Book
 from users.models import Reader
@@ -70,19 +71,10 @@ def rent_a_book(request, pk):
     """
     Выдать книгу на руки пользователю.
     """
-    user = request.user
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
-        if book.is_rented:
+        if not manage_books(request, book, "RENT"):
             raise PermissionDenied(Errors.BOOK_IS_RENTED.value)
-        else:
-            book.reader = request.user
-            request.user.ever_rented_a_book = True
-            book.is_rented = True
-            book.rented_at = now()
-            user.ever_rented_a_book = True
-            user.save()
-        book.save()
     return redirect(request.META.get("HTTP_REFERER"))
 
 
@@ -93,9 +85,5 @@ def return_a_book(request, pk):
     """
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
-        if book.is_rented and book.reader == request.user:
-            book.reader = None
-            book.is_rented = False
-            book.rented_at = None
-            book.save()
+        manage_books(request, book, "RETURN")
     return redirect(request.META.get("HTTP_REFERER"))

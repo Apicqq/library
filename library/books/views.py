@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.timezone import now
 from django.views.generic import ListView, CreateView
 
 from core.constants import Errors
@@ -47,7 +46,7 @@ class BookCreateView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_librarian:
-            raise PermissionDenied(Errors.NOT_AUTHORIZED_TO_RENT)
+            raise PermissionDenied(Errors.NOT_AUTHORIZED_TO_RENT.value)
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):

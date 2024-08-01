@@ -85,8 +85,8 @@ cd <путь_до_папки_с_проектом>/library
     ```
 
 Запустить проект (в зависимости от выбранного менеджера зависимости) можно командами:
-- `poetry run python task_manager/manage.py runserver`
-- `python task_manager/manage.py runserver`
+- `poetry run python library/manage.py runserver`
+- `python library/manage.py runserver`
 
 ### Наполнение тестовой БД данными
 

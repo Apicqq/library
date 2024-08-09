@@ -34,9 +34,9 @@ class MyBooksListView(BooksListView):
     ordering = "title"
 
     def get_queryset(self):
-        return Book.objects.select_related(
-            "reader"
-        ).filter(reader=self.request.user)
+        return Book.objects.select_related("reader").filter(
+            reader=self.request.user
+        )
 
 
 class BookCreateView(CreateView):
@@ -91,7 +91,5 @@ def return_a_book(request, pk):
     book = Book.objects.get(pk=pk)
     if request.method == "POST":
         if not manage_books(request, book, "RETURN"):
-            raise PermissionDenied(
-                Errors.BOOK_NOT_RENTED.value
-            )
+            raise PermissionDenied(Errors.BOOK_NOT_RENTED.value)
     return redirect(request.META.get("HTTP_REFERER"))
